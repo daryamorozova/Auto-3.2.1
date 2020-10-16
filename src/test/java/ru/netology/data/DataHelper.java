@@ -1,0 +1,38 @@
+package ru.netology.data;
+
+import com.github.javafaker.Faker;
+import lombok.Value;
+
+public class DataHelper {
+    private DataHelper() {
+    }
+
+    @Value
+    public static class AuthInfo {
+        String login;
+        String password;
+    }
+
+    public static AuthInfo getAuthInfo() {
+        return new AuthInfo("user", "qwerty123");
+    }
+
+    public static AuthInfo getInvalidAuthIfInvalidLogin() {
+        Faker faker = new Faker();
+        return new AuthInfo(faker.name().firstName(), "qwerty123");
+    }
+
+    public static AuthInfo getInvalidAuthIfInvalidPassword() {
+        Faker faker = new Faker();
+        return new AuthInfo("user", faker.internet().password());
+    }
+
+    @Value
+    public static class VerificationCode {
+        String code;
+    }
+
+    public static VerificationCode getInvalidVerificationCode() {
+        return new VerificationCode("123456789");
+    }
+}
