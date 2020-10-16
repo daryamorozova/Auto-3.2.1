@@ -37,7 +37,7 @@ public class AuthorizationTest {
     void shouldFailureAuthorizationIfInvalidLogin() {
         val loginPage = new LoginPage();
         val authInfo = getInvalidAuthIfInvalidLogin();
-        loginPage.authorizationValid(authInfo);
+        loginPage.completedEntry(authInfo);
         loginPage.authorizationInvalid();
     }
 
@@ -45,7 +45,7 @@ public class AuthorizationTest {
     void shouldFailureAuthorizationIfInvalidPassword() {
         val loginPage = new LoginPage();
         val authInfo = getInvalidAuthIfInvalidPassword();
-        loginPage.authorizationValid(authInfo);
+        loginPage.completedEntry(authInfo);
         loginPage.authorizationInvalid();
     }
 
@@ -63,7 +63,7 @@ public class AuthorizationTest {
     void shouldBlockedIfTryEnterWithInvalidPasswordThreeTimes() {
         val loginPage = new LoginPage();
         val authInfo = getInvalidAuthIfInvalidPassword();
-        loginPage.authorizationValid(authInfo);
+        loginPage.completedEntry(authInfo);
         loginPage.authorizationInvalid();
         loginPage.clearPassword();
         loginPage.authorizationInvalidIfInvalidPassword(authInfo.getPassword());

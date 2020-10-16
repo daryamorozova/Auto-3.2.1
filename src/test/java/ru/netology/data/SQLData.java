@@ -38,7 +38,9 @@ public class SQLData {
              PreparedStatement preparedStatementId = connection.prepareStatement(findId)) {
             preparedStatementId.setString(1, login);
             try (ResultSet resultSet = preparedStatementId.executeQuery()) {
-                userId = runner.query(connection, findId, new ScalarHandler<>());
+                if (resultSet.next()) {
+                    userId = resultSet.getString("id");
+                }
             }
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -50,7 +52,9 @@ public class SQLData {
              PreparedStatement preparedStatementCode = connection.prepareStatement(verificationCode)) {
             preparedStatementCode.setString(1, userId);
             try (ResultSet resultSet = preparedStatementCode.executeQuery()) {
-                verifCode = runner.query(connection, verificationCode, new ScalarHandler<>());
+                if (resultSet.next()) {
+                    verifCode = resultSet.getString("code");
+                }
             }
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
