@@ -33,4 +33,8 @@ public class LoginPage {
         passwordField.doubleClick().sendKeys(Keys.BACK_SPACE);
     }
 
+    public void loginButtonShouldBeInactive() {
+        loginButton.shouldBe(Condition.disabled);
+    }
+
 }

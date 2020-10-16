@@ -1,22 +1,13 @@
 package ru.netology.test;
 
-import com.github.javafaker.Faker;
 import lombok.val;
-import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.BeanHandler;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
-import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.page.LoginPage;
 
-import java.sql.DriverManager;
-import java.sql.SQLData;
-import java.sql.SQLException;
-
 import static com.codeborne.selenide.Selenide.open;
-import static ru.netology.data.DataHelper.getAuthInfo;
+import static ru.netology.data.DataHelper.*;
 import static ru.netology.data.SQLData.dropDataBase;
 import static ru.netology.data.SQLData.getVerificationCode;
 
@@ -42,5 +33,43 @@ public class AuthorizationTest {
         dashboardPage.dashboardPageIsVisible();
     }
 
+    @Test
+    void shouldFailureAuthorizationIfInvalidLogin() {
+        val loginPage = new LoginPage();
+        val authInfo = getInvalidAuthIfInvalidLogin();
+        loginPage.authorizationValid(authInfo);
+        loginPage.authorizationInvalid();
+    }
+
+    @Test
+    void shouldFailureAuthorizationIfInvalidPassword() {
+        val loginPage = new LoginPage();
+        val authInfo = getInvalidAuthIfInvalidPassword();
+        loginPage.authorizationValid(authInfo);
+        loginPage.authorizationInvalid();
+    }
+
+    @Test
+    void shouldFailureVerificationIfInvalidCode() {
+        val loginPage = new LoginPage();
+        val authInfo = getAuthInfo();
+        val verificationPage = loginPage.authorizationValid(authInfo);
+        val verificationCode = getInvalidVerificationCode();
+        verificationPage.verificationValid(verificationCode);
+        verificationPage.verificationInvalid();
+    }
+
+    @Test
+    void shouldBlockedIfTryEnterWithInvalidPasswordThreeTimes() {
+        val loginPage = new LoginPage();
+        val authInfo = getInvalidAuthIfInvalidPassword();
+        loginPage.authorizationValid(authInfo);
+        loginPage.authorizationInvalid();
+        loginPage.clearPassword();
+        loginPage.authorizationInvalidIfInvalidPassword(authInfo.getPassword());
+        loginPage.clearPassword();
+        loginPage.authorizationInvalidIfInvalidPassword(authInfo.getPassword());
+        loginPage.loginButtonShouldBeInactive();
+    }
 
 }

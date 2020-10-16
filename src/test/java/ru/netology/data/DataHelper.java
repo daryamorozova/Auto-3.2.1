@@ -32,7 +32,7 @@ public class DataHelper {
         String code;
     }
 
-    public static VerificationCode getInvalidVerificationCode() {
-        return new VerificationCode("123456789");
+    public static String getInvalidVerificationCode() {
+        return ("123456789");
     }
 }
